@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -e
+
+die() { echo "$*" 1>&2 ; exit 1; }
+
+PV_BASE="/export/pvs"
+
+test -z "$1" && die "PV size missing"
+pvsize=$1
+shift
+
+echo "PV size: $pvsize"
+
+create() {
+	local pvnr="$1"
+	local dir="$PV_BASE/pv$pvnr" 
+	test -d "$dir" && return 0
+
+	install -m 0777 -d "$dir"
+
+	oc create -f - <<__EOF__
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: pv-$pvnr
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: $pvsize
+  hostPath:
+    path: $dir
+  persistentVolumeReclaimPolicy: Recycle
+__EOF__
+}
+
+for i in $*; do
+	create "$i"
+done

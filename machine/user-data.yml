@@ -1,0 +1,29 @@
+#cloud-config
+
+# https://gist.github.com/ctron/e8af2bd108ca44cc85b7a5ba16909721
+
+growpart:
+  mode: off
+
+runcmd:
+  - [ parted, "/dev/sda", mkpart, primary, ext2, "50GB", "100%" ]
+  - [ parted, "/dev/sda", set, "2", lvm, on ]
+  - [ growpart, "/dev/sda", "1" ] 
+  - [ partx, --update, "/dev/sda" ]
+  - [ resize2fs, /dev/sda1 ]
+  - [ pvcreate, "/dev/sda2" ]
+  - [ vgcreate, docker-vg, "/dev/sda2" ]
+  - [ systemctl, enable, NetworkManager ]
+  - [ systemctl, start, NetworkManager ]
+  - [ bash, "-c", "echo -e 'BOOTPROTO=static\nONBOOT=yes\nDEVICE=eth0:1\nTYPE=Ethernet\nIPADDR=94.130.191.121\nNETMASK=255.255.255.255' > /etc/sysconfig/network-scripts/ifcfg-eth0\\:1" ]
+  - [ ifup, "eth0:1" ]
+  - [ bash, "-c", "echo VG=docker-vg > /etc/sysconfig/docker-storage-setup"]
+  - [ systemctl, start, docker ]
+
+repo_update: true
+repo_upgrade: all
+
+packages:
+  - docker
+  - lvm2
+  - NetworkManager

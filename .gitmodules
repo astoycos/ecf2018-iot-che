@@ -1,0 +1,14 @@
+[submodule "openshift-ansible"]
+	path = openshift/openshift-ansible
+	url = https://github.com/openshift/openshift-ansible
+	branch = release-3.9
+[submodule "hono"]
+	path = hono
+	url = https://github.com/eclipse/hono
+[submodule "hono-demo-1"]
+	path = hono-demo-1
+	url = https://github.com/ctron/hono-demo-1
+[submodule "che"]
+	path = che
+	url = https://github.com/eclipse/che
+	branch = 6.5.x
