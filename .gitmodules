@@ -12,3 +12,7 @@
 	path = che
 	url = https://github.com/eclipse/che
 	branch = 6.5.x
+[submodule "strimzi"]
+	path = strimzi
+	url = https://github.com/strimzi/strimzi
+	branch = release-0.4.x

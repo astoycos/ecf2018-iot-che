@@ -36,6 +36,20 @@ And configure it:
 
     curl -X POST -T "enmasse/addresses.json" -H "content-type: application/json" https://$(oc -n enmasse get route restapi -o jsonpath='{.spec.host}')/apis/enmasse.io/v1alpha1/namespaces/enmasse/addressspaces/default/addresses
 
+## Strimzi / Kafka
+
+On the master:
+
+    git clone -b release-0.4.x https://github.com/strimzi/strimzi
+    oc new-project strimzi --display-name='Strimzi / Kafka'
+    oc create -f strimzi/examples/install/cluster-operator
+    oc create -f strimzi/examples/templates/cluster-operator
+
+Deploy a Kafka cluster and topics:
+
+    oc project strimzi
+    oc create -f kafka
+
 ## Installing Eclipse Hono
 
 Deploy Hono:

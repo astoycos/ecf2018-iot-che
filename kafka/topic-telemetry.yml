@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: telemetry
+  labels:
+    strimzi.io/kind: topic
+    strimzi.io/cluster: hono-kafka-cluster
+data:
+  name: telemetry
+  partitions: "10"
+  replicas: "1"
