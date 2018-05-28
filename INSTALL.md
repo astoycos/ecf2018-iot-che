@@ -1,13 +1,16 @@
 # Installation instructions
 
-## Install master
+**Note**: All sections assume that you start at the root of this repository and that you
+are logged in to the OpenShift cluster with `oc`.
+
+## Install master machine
 
 * Create new machine
   * CentOS 7
-  * Type: CX41+
-  * User Data: [user-data.yml](user-data.yml)
+  * Type: CX51
+  * User Data: [machine/user-data.yml](machine/user-data.yml)
   * Add SSH keys
-* Assign floating IP
+* Assign floating IP and map DNS -> use this IP and hostname instead of `fantastic.iot-playground.org`
 * Renew Let's encrypt certificate
 * Setup OpenShift
   * Run installer … see [openshift/README.md](openshift/README.md) 
@@ -22,17 +25,9 @@ Download release:
 Deploy EnMasse:
 
     oc new-project enmasse --display-name='EnMasse Instance'
-    #oc create secret tls api-server-cert --cert=/home/jreimann/letsencrypt/fantastic.iot-playground.org/fullchain.cer --key=/home/jreimann/letsencrypt/fantastic.iot-playground.org/fantastic.iot-playground.org.key
-    #oc create configmap address-space-controller-config --from-literal=wildcardEndpointCertSecret=api-server-cert
-    
-    # enmasse-0.20.0-rc3/deploy.sh: comment out "oc create configmap address-space-controller-config"
-    # enmasse-0.20.0-rc3/deploy.sh: comment out "create_self_signed_cert … api-server-cert"
-    
     ./enmasse-0.20.0/deploy.sh -n enmasse -u iot -m https://fantastic.iot-playground.org:8443 -k /home/jreimann/letsencrypt/fantastic.iot-playground.org/fantastic.iot-playground.org.key -c /home/jreimann/letsencrypt/fantastic.iot-playground.org/fullchain.cer
 
-And configure it:
-
-    oc create -f enmasse/addresses.yml
+Once it is up and running configure it:
 
     curl -X POST -T "enmasse/addresses.json" -H "content-type: application/json" https://$(oc -n enmasse get route restapi -o jsonpath='{.spec.host}')/apis/enmasse.io/v1alpha1/namespaces/enmasse/addressspaces/default/addresses
 
