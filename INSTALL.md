@@ -87,7 +87,7 @@ Deploy Hono:
 
     oc new-project hono-consumer --display-name 'Hono Consumer'
     
-    oc new-app fabric8/s2i-java~https://github.com/ctron/hono-example-bridge.git
+    oc new-app fabric8/s2i-java~https://github.com/ctron/hono-example-bridge
     #oc patch dc/hono-example-bridge --patch '{"spec":{"template":{"spec":{"containers":[{"name":"hono-example-bridge", "ports":[{"containerPort":"8778", "name":"jolokia" }]}]}}}}'
     oc set probe dc/hono-example-bridge --readiness --liveness --get-url=http://:8080/health
 
