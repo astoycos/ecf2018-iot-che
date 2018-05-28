@@ -9,3 +9,5 @@ the setup.
 
 Clone this repository with `--recursive` or `--recursive-submodules`
 in order to fetch all submodules during the initial clone.
+
+The actual setup is covered in: [INSTALL.md](INSTALL.md "Installation Guide")
