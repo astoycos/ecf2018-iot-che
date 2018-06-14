@@ -12,6 +12,12 @@ in order to fetch all submodules during the initial clone.
 
 The actual setup is covered in: [INSTALL.md](INSTALL.md "Installation Guide")
 
+## Talk & slides
+
+You can find the actual talk here, including a link to the slides:
+
+<https://www.eclipsecon.org/france2018/session/iot-cloud-development-che>
+
 ## See also
 
 This project uses a bunch of other repositories:
